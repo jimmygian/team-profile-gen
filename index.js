@@ -10,16 +10,16 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
-const { employeeQs } = require("./src/questions.js");
+const { managerQs, internQs, engineerQs } = require("./src/questions.js");
 
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 
 // // TEST //
-// const emp1 = new Manager("Nick Harvard", "nharv@grmail.com", 1);
-// const emp2 = new Engineer("Dim Gian", "dg92@gmail.com", "jimmygian");
-// const emp3 = new Engineer("Nick MIT", "nharv@grmail.com", "nickmit22");
-// const emp4 = new Intern("Jack Stanford", "nharv@grmail.com", "Harvard");
+// const emp1 = new Manager("Nick Harvard", 123, "nharv@grmail.com", 1);
+// const emp2 = new Engineer("Dim Gian", 333, "dg92@gmail.com", "jimmygian");
+// const emp3 = new Engineer("Nick MIT", 444, "nharv@grmail.com", "nickmit22");
+// const emp4 = new Intern("Jack Stanford", 534, "nharv@grmail.com", "Harvard");
 
 // console.log(emp1, emp1.getRole())
 // console.log(emp2, emp2.getRole())
@@ -32,7 +32,7 @@ const { employeeQs } = require("./src/questions.js");
 // function to initialize program
 function makeManager() {
 inquirer
-    .prompt(employeeQs)
+    .prompt(engineerQs)
     .then((answers) => {
     console.log(answers);
     })

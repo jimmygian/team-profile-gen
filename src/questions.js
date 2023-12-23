@@ -2,12 +2,13 @@ const helper = require("./helper");
 const inquirer = require("inquirer");
 
 // array of questions for user
-const employeeQs = [
+const generateBasicQs = (type) => { 
+    const Qs = [
     // NAME
     {
         type: 'input',
         name: 'name',
-        message: "Manager's name?",
+        message: `${type}'s Name:`,
         validate(input) {
             // Trim leading and trailing whitespaces
             const trimmedInput = input.trim();
@@ -21,8 +22,8 @@ const employeeQs = [
     // ID
     {
         type: 'input',
-        name: 'ID',
-        message: "Employee ID?",
+        name: `${type}'s ID`,
+        message: "ID:",
         validate(input) {
             // Trim leading and trailing whitespaces
             const trimmedInput = input.trim();
@@ -37,7 +38,7 @@ const employeeQs = [
     {
       type: 'input',
       name: 'email',
-      message: "What's your email?",
+      message: `${type}'s Email:`,
       validate(input) {
         const trimmedInput = input.trim();
   
@@ -49,7 +50,15 @@ const employeeQs = [
         }
         return "Please provide a correct email or leave it blank.";
       }
-    },
+    }
+  ];
+
+  return Qs;
+}
+
+
+const managerBasicQs = generateBasicQs("Manager");
+const managerQs = [...managerBasicQs, 
     // Office Number
     {
         type: 'input',
@@ -65,23 +74,47 @@ const employeeQs = [
             return "Please provide a numerical value (of type: Integer).";
         }
     },
-    // // GITHUB USERNAME
-    // {
-    //     type: 'input',
-    //     name: 'github_username',
-    //     message: "What's your GitHub username?",
-    //     validate(input) {
-    //         if (helper.isGitHubUsername(input.trim())) {
-    //         return true;
-    //         }
-    //         return "Please provide a correct github username."
-    //     },
-    // }
-  ];
+];
 
-  const anotherArray = [0, "00"];
+
+const engineerBasicQs = generateBasicQs("Engineer");
+const engineerQs = [...engineerBasicQs,
+    // GITHUB USERNAME
+    {
+        type: 'input',
+        name: 'github_username',
+        message: "What's your GitHub username?",
+        validate(input) {
+            if (helper.isGitHubUsername(input.trim())) {
+            return true;
+            }
+            return "Please provide a correct github username."
+        },
+    }
+];
+
+const internBasicQs = generateBasicQs("Intern");
+const internQs = [...internBasicQs,
+    // NAME
+    {
+        type: 'input',
+        name: 'school',
+        message: "Intern's school?",
+        validate(input) {
+            // Trim leading and trailing whitespaces
+            const trimmedInput = input.trim();
+    
+            if (trimmedInput !== '') {
+            return true;
+            }
+            return "Please provide a correct value.";
+        }
+    }
+];
+
 
   module.exports = {
-    employeeQs,
-    anotherArray
+    managerQs,
+    engineerQs,
+    internQs
 };
