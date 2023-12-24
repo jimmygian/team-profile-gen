@@ -14,37 +14,94 @@ const { managerQs, internQs, engineerQs } = require("./src/questions.js");
 
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
+async function runSequentially() {
+    // GET MANAGER
+    const manager = await makeEmployee(managerQs);
 
-// // TEST //
-// const emp1 = new Manager("Nick Harvard", 123, "nharv@grmail.com", 1);
-// const emp2 = new Engineer("Dim Gian", 333, "dg92@gmail.com", "jimmygian");
-// const emp3 = new Engineer("Nick MIT", 444, "nharv@grmail.com", "nickmit22");
-// const emp4 = new Intern("Jack Stanford", 534, "nharv@grmail.com", "Harvard");
+    // Initialize Eng / Int arrays
+    const engineers = [];
+    const interns = [];
+    let continueLoop = true; // Control variable for the loop
 
-// console.log(emp1, emp1.getRole())
-// console.log(emp2, emp2.getRole())
-// console.log(emp3, emp3.getRole())
-// console.log(emp4, emp4.getRole())
-// // --- //
-  
+    while (continueLoop) {
+        // Ask for next Choice
+        const choice = await nextChoice();
+        console.log("choice:", choice);
+        switch (choice) {
+            case 1:
+                const engineer = await makeEmployee(engineerQs);
+                engineers.push(engineer);
+                break;
+            case 2:
+                const intern = await makeEmployee(internQs);
+                interns.push(intern);
+                break;
+            default:
+                continueLoop = false;
+        }
+    }
+    
+    console.log(manager);
+    console.log(engineers);
+    console.log(interns);
+}
+
+// Call the function to start the sequential execution
+runSequentially();
+
+
+
   // ** FUNCTIONS **
 
 // function to initialize program
-function makeManager() {
-inquirer
-    .prompt(engineerQs)
-    .then((answers) => {
-    console.log(answers);
-    })
-    .catch((error) => {
-    if (error.isTtyError) {
-        // Prompt couldn't be rendered in the current environment
-        console.error(error);
-    } else {
-        // Something else went wrong
-        console.error(error);
+async function makeEmployee(questions) {
+    try {
+        const answers = await inquirer.prompt(questions);
+        return answers;
+    } catch (error) {
+        if (error.isTtyError) {
+            // Prompt couldn't be rendered in the current environment
+            console.error(error);
+        } else {
+            // Something else went wrong
+            console.error(error);
+        }
     }
-    });
 }
 
-makeManager();
+
+async function nextChoice() {
+    const choices = [
+        "Add an engineer",
+        "Add an intern",
+        "Finish building the team"
+    ];
+
+    const question = {             
+        type: 'list',
+        name: 'licence',
+        message: "Prefered licence type?",
+        choices: [...choices],
+    };
+
+    try {
+        const answer = await inquirer.prompt(question);
+        console.log("choice answer:", answer);
+        switch (answer.licence) {
+            case "Add an engineer":
+                return 1;
+            case "Add an intern":
+                return 2;
+            case "Finish building the team":
+                return 3;
+            default:
+                return null; // Or some other default value if needed
+        }
+    } catch (error) {
+        if (error.isTtyError) {
+            console.error(error);
+        } else {
+            console.error(error);
+        }
+    }
+}

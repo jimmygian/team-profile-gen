@@ -1,3 +1,4 @@
+const Employee = require("../lib/Employee");
 const helper = require("./helper");
 const inquirer = require("inquirer");
 
@@ -22,8 +23,12 @@ const generateBasicQs = (type) => {
     // ID
     {
         type: 'input',
-        name: `${type}'s ID`,
-        message: "ID:",
+        name: 'id',
+        message: `${type}'s ID:`,
+        default() {
+            Employee.employeeID++;
+            return `${Employee.employeeID}`;
+        },
         validate(input) {
             // Trim leading and trailing whitespaces
             const trimmedInput = input.trim();
