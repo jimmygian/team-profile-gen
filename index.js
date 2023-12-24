@@ -14,6 +14,15 @@ const { managerQs, internQs, engineerQs } = require("./src/questions.js");
 
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
+async function init() {
+    const team = await runSequentially();
+    console.log(team);
+}
+init();
+
+
+
+
 async function runSequentially() {
     // GET MANAGER
     const manager = await makeEmployee(managerQs);
@@ -26,7 +35,6 @@ async function runSequentially() {
     while (continueLoop) {
         // Ask for next Choice
         const choice = await nextChoice();
-        console.log("choice:", choice);
         switch (choice) {
             case 1:
                 const engineer = await makeEmployee(engineerQs);
@@ -40,16 +48,11 @@ async function runSequentially() {
                 continueLoop = false;
         }
     }
-    
-    console.log(manager);
-    console.log(engineers);
-    console.log(interns);
+    // console.log(manager);
+    // console.log(engineers);
+    // console.log(interns);
+    return { manager: manager, engineers: engineers, interns: interns};
 }
-
-// Call the function to start the sequential execution
-runSequentially();
-
-
 
   // ** FUNCTIONS **
 
@@ -86,7 +89,6 @@ async function nextChoice() {
 
     try {
         const answer = await inquirer.prompt(question);
-        console.log("choice answer:", answer);
         switch (answer.licence) {
             case "Add an engineer":
                 return 1;
