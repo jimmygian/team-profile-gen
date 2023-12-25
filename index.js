@@ -4,7 +4,6 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-const helper = require("./src/helper.js");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
@@ -14,9 +13,8 @@ const { managerQs, internQs, engineerQs } = require("./src/questions.js");
 const { resolveNaptr } = require("dns");
 
 
-// TODO: Write Code to gather information about the development team members, and render the HTML file.
 async function init() {
-    const team = await runSequentially();
+    const team = await getTeam();
     console.log(team);
 
     // Create array to store Employee instances
@@ -28,29 +26,37 @@ async function init() {
     
     // Add Engineers to array
     const engineers = team.engineers;
-    engineers.forEach(engineer => {
-        const eng = new Engineer(engineer.name, engineer.id, engineer.email, engineer.github);
-        empArr.push(eng);
-    });
+    if (engineers.length !== 0) {
+        engineers.forEach(engineer => {
+            const eng = new Engineer(engineer.name, engineer.id, engineer.email, engineer.github);
+            empArr.push(eng);
+        });
+    }
 
     // Add Interns to array
     const interns = team.interns;
-    interns.forEach(intern => {
-        const intr = new Intern(intern.name, intern.id, intern.email, intern.school);
-        empArr.push(intr);
-    });
+    if (interns.length !== 0) {
+        interns.forEach(intern => {
+            const intr = new Intern(intern.name, intern.id, intern.email, intern.school);
+            empArr.push(intr);
+        });
+    }
     
     // Render page
     const page = render(empArr);
-    console.log(page);
+    // console.log(page);
+
+    // Generate output folder + team.html
+    generateHtml(page);
 }
 init();
 
 
 
+  // ** FUNCTIONS ** //
 
-async function runSequentially() {
-    // GET MANAGER
+async function getTeam() {
+    // Get Manager
     const manager = await makeEmployee(managerQs);
 
     // Initialize Eng / Int arrays
@@ -74,13 +80,9 @@ async function runSequentially() {
                 continueLoop = false;
         }
     }
-    // console.log(manager);
-    // console.log(engineers);
-    // console.log(interns);
     return { manager: manager, engineers: engineers, interns: interns};
 }
 
-  // ** FUNCTIONS **
 
 // function to initialize program
 async function makeEmployee(questions) {
@@ -132,4 +134,38 @@ async function nextChoice() {
             console.error(error);
         }
     }
+}
+
+function generateHtml(page) {
+    // Check if OUTPUT_DIR exists
+    fs.stat(OUTPUT_DIR, (err, stats) => {
+        if (err) {
+            // Directory does not exist
+            fs.mkdir(OUTPUT_DIR, { recursive: true }, (mkdirErr) => {
+                if (mkdirErr) {
+                    console.error("Error creating directory:", mkdirErr);
+                } else {
+                    // Write file after creating directory
+                    const filePath = path.join(OUTPUT_DIR, "team.html");
+                    fs.writeFile(filePath, page, (writeErr) => {
+                        if (writeErr) {
+                            console.error("Error writing file:", writeErr);
+                        } else {
+                            console.log("File written successfully.");
+                        }
+                    });
+                }
+            });
+        } else {
+            // Directory exists
+            const filePath = path.join(OUTPUT_DIR, "team.html");
+            fs.writeFile(filePath, page, (writeErr) => {
+                if (writeErr) {
+                    console.error("Error writing file:", writeErr);
+                } else {
+                    console.log("File written successfully.");
+                }
+            });
+        }
+    });
 }
