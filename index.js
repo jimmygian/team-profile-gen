@@ -6,16 +6,13 @@ const path = require("path");
 const fs = require("fs");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
 const { managerQs, internQs, engineerQs } = require("./src/questions.js");
-const { resolveNaptr } = require("dns");
 
 
 async function init() {
     const team = await getTeam();
-    console.log(team);
 
     // Create array to store Employee instances
     const empArr = [];
@@ -44,7 +41,6 @@ async function init() {
     
     // Render page
     const page = render(empArr);
-    // console.log(page);
 
     // Generate output folder + team.html
     generateHtml(page);
