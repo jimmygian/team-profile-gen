@@ -11,12 +11,20 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
 const { managerQs, internQs, engineerQs } = require("./src/questions.js");
+const { resolveNaptr } = require("dns");
 
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 async function init() {
     const team = await runSequentially();
     console.log(team);
+
+    const empArr = [];
+
+    const manager = new Manager(team.manager.name, team.manager.id, team.manager.email, team.manager.officeNum);
+    empArr.push(manager);
+    const page = render(empArr);
+    console.log(page);
 }
 init();
 
