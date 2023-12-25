@@ -19,10 +19,28 @@ async function init() {
     const team = await runSequentially();
     console.log(team);
 
+    // Create array to store Employee instances
     const empArr = [];
 
+    // Add Manager to array
     const manager = new Manager(team.manager.name, team.manager.id, team.manager.email, team.manager.officeNum);
     empArr.push(manager);
+    
+    // Add Engineers to array
+    const engineers = team.engineers;
+    engineers.forEach(engineer => {
+        const eng = new Engineer(engineer.name, engineer.id, engineer.email, engineer.github);
+        empArr.push(eng);
+    });
+
+    // Add Interns to array
+    const interns = team.interns;
+    interns.forEach(intern => {
+        const intr = new Intern(intern.name, intern.id, intern.email, intern.school);
+        empArr.push(intr);
+    });
+    
+    // Render page
     const page = render(empArr);
     console.log(page);
 }

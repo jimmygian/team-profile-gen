@@ -87,7 +87,7 @@ const engineerQs = [...engineerBasicQs,
     // GITHUB USERNAME
     {
         type: 'input',
-        name: 'github_username',
+        name: 'github',
         message: "What's your GitHub username?",
         validate(input) {
             if (helper.isGitHubUsername(input.trim())) {
