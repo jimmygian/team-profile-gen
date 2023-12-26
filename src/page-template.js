@@ -4,8 +4,8 @@ const generateTeam = team => {
     // creates the manager html
     const generateManager = manager => {
         return `
-        <div class="card employee-card">
-        <div class="card-header">
+        <div class="col-12 card employee-card manager">
+        <div class="card-header text-center">
             <h2 class="card-title">${manager.getName()}</h2>
             <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>${manager.getRole()}</h3>
         </div>
@@ -23,8 +23,8 @@ const generateTeam = team => {
     // creates the html for engineers
     const generateEngineer = engineer => {
         return `
-        <div class="card employee-card">
-    <div class="card-header">
+        <div class="col-12 col-md-6 card employee-card engineer">
+    <div class="card-header text-center">
         <h2 class="card-title">${engineer.getName()}</h2>
         <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>${engineer.getRole()}</h3>
     </div>
@@ -42,8 +42,8 @@ const generateTeam = team => {
     // creates the html for interns
     const generateIntern = intern => {
         return `
-        <div class="card employee-card">
-    <div class="card-header">
+        <div class="col card employee-card intern">
+    <div class="card-header text-center">
         <h2 class="card-title">${intern.getName()}</h2>
         <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>${intern.getRole()}</h3>
     </div>
@@ -94,22 +94,45 @@ module.exports = team => {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: rgb(68, 66, 75);
+        }
+        .employee-card {
+            border-radius: 1px;
+            border: 10px solid rgb(68, 66, 75);
+        }
+        .employee-card li {
+            font-weight: 500;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            margin: 1px;
+            border-radius: 10%;
+        }
+        .manager {
+            background-color: rgb(234, 103, 103);
+            border-radius: 35px;
+        }
+        .engineer {
+            background-color: rgb(46, 194, 115);
+        }
+        .intern {
+            background-color: rgb(182, 234, 103);
+        }
+    </style>
     <script src="https://kit.fontawesome.com/c502137733.js"></script>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 jumbotron mb-3 team-heading">
-                <h1 class="text-center">My Team</h1>
+            <div class="col-12 jumbotron mb-3 team-heading" style="background-color: rgb(48, 48, 48)">
+                <h1 class="text-center" style="color: rgb(255, 255, 255); font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-weight: 600;">My Team</h1>
             </div>
         </div>
     </div>
     <div class="container">
-        <div class="row">
-            <div class="team-area col-12 d-flex justify-content-center">
-                ${generateTeam(team)}
-            </div>
+        <div class="team-area row">
+            ${generateTeam(team)}
         </div>
     </div>
 </body>
